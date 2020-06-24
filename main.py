@@ -17,7 +17,7 @@ parser.add_argument('--exp_name', type=str, default='interpolation_exp')
 parser.add_argument('--dataset', type=str, default='CoMA')
 parser.add_argument('--split', type=str, default='interpolation')
 parser.add_argument('--test_exp', type=str, default='bareteeth')
-parser.add_argument('--n_threads', type=int, default=4)
+parser.add_argument('--n_threads', type=int, default=24)
 parser.add_argument('--device_idx', type=int, default=0)
 
 # network hyperparameters
@@ -55,7 +55,7 @@ utils.makedirs(args.out_dir)
 utils.makedirs(args.checkpoints_dir)
 
 writer = writer.Writer(args)
-device = torch.device('cuda', args.device_idx)
+device = torch.device('cpu', args.device_idx)
 torch.set_num_threads(args.n_threads)
 
 # deterministic
