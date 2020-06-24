@@ -2,7 +2,8 @@ import sys
 import inspect
 
 import torch
-from torch_geometric.utils import scatter_
+#from torch_geometric.utils import scatter_
+from torch_scatter import scatter
 
 special_args = [
     'edge_index', 'edge_index_i', 'edge_index_j', 'size', 'size_i', 'size_j'
@@ -15,11 +16,11 @@ getargspec = inspect.getargspec if is_python2 else inspect.getfullargspec
 
 
 class MessagePassing(torch.nn.Module):
-    def __init__(self, aggr='add', flow='source_to_target'):
+    def __init__(self, aggr='sum', flow='source_to_target'):
         super(MessagePassing, self).__init__()
 
         self.aggr = aggr
-        assert self.aggr in ['add', 'mean', 'max']
+        assert self.aggr in ['sum', 'mean', 'max']
 
         self.flow = flow
         assert self.flow in ['source_to_target', 'target_to_source']
@@ -86,7 +87,8 @@ class MessagePassing(torch.nn.Module):
         update_args = [kwargs[arg] for arg in self.__update_args__]
 
         out = self.message(*message_args)
-        out = scatter_(self.aggr, out, edge_index[i], dim, dim_size=size[i])
+        #out = scatter(self.aggr, out, edge_index[i], dim, dim_size=size[i])
+        out = scatter(out, edge_index[i], dim=dim, dim_size=size[i], reduce=self.aggr)
         out = self.update(out, *update_args)
 
         return out

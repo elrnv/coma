@@ -53,7 +53,7 @@ class ChebConv(MessagePassing):
                  cached=True,
                  bias=True,
                  **kwargs):
-        super(ChebConv, self).__init__(aggr='add', **kwargs)
+        super(ChebConv, self).__init__(aggr='sum', **kwargs)
 
         assert K > 0
         assert normalization in [None, 'sym', 'rw'], 'Invalid normalization'
