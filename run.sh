@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker run -it -v $HOME/proj/coma:/data elrnv/pytorch
+docker run -it -v $HOME/proj/coma:/data ai4d/coma
